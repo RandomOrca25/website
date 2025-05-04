@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Webpage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .copy-button {
+            cursor: pointer;
+        }
+        .copy-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('https://placehold.co/1200x300/EEE/31343C');">
+        <div class="container mx-auto text-center">
+            </div>
+    </header>
+
+    <main class="container mx-auto py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="https://example.com" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-center">
+                Purchase VIP
+            </a>
+
+            <a href="https://example.com" class="bg-green-500 hover:bg-green-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 text-center">
+                Purchase MVP
+            </a>
+
+            <a href="https://example.com" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 text-center">
+                Purchase MVP+
+            </a>
+
+            <a href="https://example.com" class="bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 text-center">
+                Purchase GOD
+            </a>
+
+            <a href="https://example.com" class="bg-purple-500 hover:bg-purple-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 text-center">
+                Purchase MVP++
+            </a>
+
+            <a href="https://example.com" class="bg-pink-500 hover:bg-pink-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 text-center">
+                Purchase MVP+++
+            </a>
+
+            <button id="java-ip-button" class="copy-button bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center">
+                Java ip: connect.zapto.org
+            </button>
+
+            <button id="eagler-ip-button" class="copy-button bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center">
+                Eagler ip: ws://connect.zapto.org:8081/
+            </button>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2024 My Website. All rights reserved.</p>
+            <p>
+                <a href="https://discord.gg/HJWwBhxFGn" class="text-gray-300 hover:text-white transition-colors duration-200 underline">Privacy Policy</a>
+                <span> | </span>
+                <a href="https://discord.gg/HJWwBhxFGn" class="text-gray-300 hover:text-white transition-colors duration-200 underline">Terms of Service</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Get the buttons
+        const javaIpButton = document.getElementById('java-ip-button');
+        const eaglerIpButton = document.getElementById('eagler-ip-button');
+
+        // Function to copy text to clipboard
+        function copyToClipboard(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999); // For mobile
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Copied to clipboard: ' + text); //optional
+        }
+
+        // Event listener for Java IP button
+        javaIpButton.addEventListener('click', function() {
+            copyToClipboard('connect.zapto.org');
+        });
+
+        // Event listener for Eagler IP button
+        eaglerIpButton.addEventListener('click', function() {
+            copyToClipboard('ws://connect.zapto.org:8081/');
+        });
+    </script>
+</body>
+</html>
