@@ -19,14 +19,17 @@
             opacity: 0.9;
         }
         header {
-            background-size: contain; /* Change to 'contain' */
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            padding-top: 20vh; /* Adjust as needed to control vertical centering */
+            padding-top: 20vh;
             padding-bottom: 20vh;
-            min-height: 50vh; /* Ensure header has a minimum height */
+            min-height: 50vh;
         }
     </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body class="bg-gray-100">
     <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png');">
@@ -71,6 +74,9 @@
         <div id="server-status-prompt" class="mt-8 text-center font-semibold text-green-600">
             Checking server status...
         </div>
+        <div id="status-timer-prompt" class="mt-2 text-center text-gray-600">
+            Checking again in 10 seconds...
+        </div>
     </main>
 
     <footer class="bg-gray-800 text-white py-6 mt-10">
@@ -89,6 +95,8 @@
         const javaIpButton = document.getElementById('java-ip-button');
         const eaglerIpButton = document.getElementById('eagler-ip-button');
         const serverStatusPrompt = document.getElementById('server-status-prompt');
+        const statusTimerPrompt = document.getElementById('status-timer-prompt');
+
 
         // Function to copy text to clipboard
         function copyToClipboard(text) {
@@ -135,9 +143,19 @@
                 });
         }
 
-        // Check server status when the page loads, and then every 20 seconds
+        // Check server status when the page loads, and then every 10 seconds
         checkServerStatus();
-        setInterval(checkServerStatus, 20000);
+        let countdown = 10;
+        statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
+        const intervalId = setInterval(() => {
+            countdown--;
+            statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
+            if (countdown <= 0) {
+                countdown = 10;
+                checkServerStatus();
+                statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
+            }
+        }, 1000);
     </script>
 </body>
 </html>
