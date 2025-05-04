@@ -225,78 +225,56 @@
                     console.error("Error fetching server status:", error);
                 });
         }
+function processMinecraftColors(text) {
+    const colorCodes = {
+        '\u00A70': '<span style="color:#000000;">', '\u00A71': '<span style="color:#0000AA;">',
+        '\u00A72': '<span style="color:#00AA00;">', '\u00A73': '<span style="color:#00AAAA;">',
+        '\u00A74': '<span style="color:#AA0000;">', '\u00A75': '<span style="color:#AA00AA;">',
+        '\u00A76': '<span style="color:#FFAA00;">', '\u00A77': '<span style="color:#AAAAAA;">',
+        '\u00A78': '<span style="color:#555555;">', '\u00A79': '<span style="color:#5555FF;">',
+        '\u00A7a': '<span style="color:#55FF55;">', '\u00A7b': '<span style="color:#55FFFF;">',
+        '\u00A7c': '<span style="color:#FF5555;">', '\u00A7d': '<span style="color:#FF55FF;">',
+        '\u00A7e': '<span style="color:#FFFF55;">', '\u00A7f': '<span style="color:#FFFFFF;">',
+        '\u00A7l': '<span style="font-weight:bold;">', '\u00A7m': '<span style="text-decoration:line-through;">',
+        '\u00A7n': '<span style="text-decoration:underline;">', '\u00A7o': '<span style="font-style:italic;">',
+        '\u00A7k': '<span class="mc-format-obfuscated" data-content="">', // handled below
+        '\u00A7r': '</span>' // Reset
+    };
 
-        function processMinecraftColors(text) {
-            const colorCodes = {
-                '\u00A70': '<span style="color:#000000;">', '\u00A71': '<span style="color:#0000AA;">',
-                '\u00A72': '<span style="color:#00AA00;">', '\u00A73': '<span style="color:#00AAAA;">',
-                '\u00A74': '<span style="color:#AA0000;">', '\u00A75': '<span style="color:#AA00AA;">',
-                '\u00A76': '<span style="color:#FFAA00;">', '\u00A77': '<span style="color:#AAAAAA;">',
-                '\u00A78': '<span style="color:#555555;">', '\u00A79': '<span style="color:#5555FF;">',
-                '\u00A7a': '<span style="color:#55FF55;">', '\u00A7b': '<span style="color:#55FFFF;">',
-                '\u00A7c': '<span style="color:#FF5555;">', '\u00A7d': '<span style="color:#FF55FF;">',
-                '\u00A7e': '<span style="color:#FFFF55;">', '\u00A7f': '<span style="color:#FFFFFF;">',
-                '\u00A7l': '<span style="font-weight:bold;">', '\u00A7m': '<span style="text-decoration:line-through;">',
-                '\u00A7n': '<span style="text-decoration:underline;">', '\u00A7o': '<span style="font-style:italic;">',
-                '\u00A7k': '<span style="animation:obfuscate 0.5s infinite; display:inline-block;" data-content="' + text + '">',
-                '\u00A7r': '</span>' // Reset
-            };
+    let resultHTML = '';
+    let openTags = [];
 
-            let resultHTML = '';
-            let currentSpan = '';
-            let resetStyle = false;
-
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (char === '\u00A7' && colorCodes[text[i + 1]]) {
-                    if (currentSpan) {
-                        resultHTML += currentSpan + '</span>';
-                        currentSpan = '';
-                    }
-                    const code = text[i] + text[i + 1];
-                    const span = colorCodes[code];
-                    currentSpan = span;
-                    i++; // Skip the color code
-                    resetStyle = false; // Don't reset immediately after a new code
-                } else if (char === '\u00A7' && text[i + 1] === 'r') {
-                    if (currentSpan) {
-                        resultHTML += currentSpan + '</span>';
-                        currentSpan = '';
-                    }
-                    resultHTML += '<span style="">';
-                    i++;
-                    resetStyle = true;
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === '\u00A7' && i + 1 < text.length) {
+            const code = text.substr(i, 2);
+            if (code === '\u00A7r') {
+                while (openTags.length > 0) {
+                    resultHTML += '</span>';
+                    openTags.pop();
                 }
-
-                 else {
-                    currentSpan += char;
-                }
+            } else if (colorCodes[code]) {
+                resultHTML += colorCodes[code];
+                openTags.push('</span>');
             }
-            resultHTML += currentSpan;
-            // Replace obfuscated spans content
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = resultHTML;
-            const obfuscatedSpans = tempDiv.querySelectorAll('[style*="animation: obfuscate"]');
-            obfuscatedSpans.forEach(span => {
-                span.style.setProperty('--obfuscated-text', generateObfuscatedText(span.textContent));
-            });
-            return tempDiv.innerHTML;
+            i++; // Skip color code
+        } else {
+            resultHTML += text[i];
         }
+    }
 
-        function generateObfuscatedText(text) {
-            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+={}[]|;:<>,.?/~";
-            let result = "";
-            for (let i = 0; i < text.length; i++) {
-                const char = text[i];
-                if (characters.includes(char)) {
-                    result += characters.charAt(Math.floor(Math.random() * characters.length));
-                }
-                else {
-                    result += char;
-                }
-            }
-            return result;
-        }
+    // Close any unclosed tags
+    while (openTags.length > 0) {
+        resultHTML += openTags.pop();
+    }
+
+    return resultHTML;
+}
+
+function generateObfuscatedText(text) {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return Array.from(text).map(char => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
 
         // Check server status every 5 seconds
         checkServerStatus();
