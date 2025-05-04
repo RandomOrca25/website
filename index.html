@@ -32,6 +32,11 @@
             font-size: 1.5rem;
             font-weight: bold;
         }
+        #player-count-display {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -78,6 +83,7 @@
             </button>
         </div>
         <div id="online-status-display"></div>
+        <div id="player-count-display"></div>
         <div class="text-center text-gray-500 text-sm mt-1">
             Server status is outdated by around 35 seconds
         </div>
@@ -102,6 +108,7 @@
         const javaIpButton = document.getElementById('java-ip-button');
         const eaglerIpButton = document.getElementById('eagler-ip-button');
         const onlineStatusDisplay = document.getElementById('online-status-display');
+        const playerCountDisplay = document.getElementById('player-count-display');
         const statusTimerPrompt = document.getElementById('status-timer-prompt');
 
         // Function to copy text to clipboard
@@ -138,14 +145,23 @@
                     if (data.online) {
                         onlineStatusDisplay.textContent = "ONLINE";
                         onlineStatusDisplay.style.color = "green"; // Set color to green
+
+                        const players = data.players;
+                        if (players) {
+                            playerCountDisplay.textContent = `${players.online}/${players.max}`;
+                        } else {
+                            playerCountDisplay.textContent = "Players: N/A";
+                        }
                     } else {
                         onlineStatusDisplay.textContent = "OFFLINE";
                         onlineStatusDisplay.style.color = "red"; // Set color to red
+                        playerCountDisplay.textContent = "Players: N/A";
                     }
                 })
                 .catch(error => {
                     onlineStatusDisplay.textContent = "Error checking status";
                     onlineStatusDisplay.style.color = "red"; // Set color to red on error
+                    playerCountDisplay.textContent = "Players: N/A";
                     console.error("Error fetching server status:", error);
                 });
         }
