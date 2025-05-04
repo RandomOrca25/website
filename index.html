@@ -21,7 +21,7 @@
     </style>
 </head>
 <body class="bg-gray-100">
-    <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png');">
+    <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('./your-image.jpg');">
         <div class="container mx-auto text-center">
             </div>
     </header>
@@ -60,6 +60,9 @@
                 Eagler ip: ws://connect.zapto.org:8081/
             </button>
         </div>
+        <div id="server-status-prompt" class="mt-8 text-center font-semibold text-green-600">
+            Checking server status...
+        </div>
     </main>
 
     <footer class="bg-gray-800 text-white py-6 mt-10">
@@ -77,6 +80,7 @@
         // Get the buttons
         const javaIpButton = document.getElementById('java-ip-button');
         const eaglerIpButton = document.getElementById('eagler-ip-button');
+        const serverStatusPrompt = document.getElementById('server-status-prompt');
 
         // Function to copy text to clipboard
         function copyToClipboard(text) {
@@ -99,6 +103,33 @@
         eaglerIpButton.addEventListener('click', function() {
             copyToClipboard('ws://connect.zapto.org:8081/');
         });
+
+        // Function to check server status
+        function checkServerStatus() {
+            const serverAddress = 'connect.zapto.org:25565';
+            const apiUrl = `https://api.mcsrvstat.us/2/${serverAddress}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.online) {
+                        serverStatusPrompt.textContent = 'Server is online';
+                        serverStatusPrompt.style.color = 'green';
+                    } else {
+                        serverStatusPrompt.textContent = 'Server is offline';
+                        serverStatusPrompt.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    serverStatusPrompt.textContent = 'Server is offline or cannot be reached';
+                    serverStatusPrompt.style.color = 'red';
+                    console.error('Error checking server status:', error);
+                });
+        }
+
+        // Check server status when the page loads, and then every 20 seconds
+        checkServerStatus();
+        setInterval(checkServerStatus, 20000);
     </script>
 </body>
 </html>
