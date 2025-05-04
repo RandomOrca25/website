@@ -26,6 +26,12 @@
             padding-bottom: 20vh;
             min-height: 50vh;
         }
+        #online-status-display {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -34,7 +40,7 @@
 <body class="bg-gray-100">
     <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png');">
         <div class="container mx-auto text-center">
-            </div>
+        </div>
     </header>
 
     <main class="container mx-auto py-10">
@@ -71,14 +77,12 @@
                 Eagler ip: ws://connect.zapto.org:8081/
             </button>
         </div>
-        <div id="server-status-prompt" class="mt-8 text-center font-semibold text-green-600">
-            Checking server status...
-        </div>
+        <div id="online-status-display"></div>
         <div class="text-center text-gray-500 text-sm mt-1">
-            Server status is outdated by around 5 minutes
+            Server status is outdated by around 35 seconds
         </div>
         <div id="status-timer-prompt" class="mt-2 text-center text-gray-600">
-            Checking again in 10 seconds...
+            Checking again in 5 seconds...
         </div>
     </main>
 
@@ -97,9 +101,8 @@
         // Get the buttons
         const javaIpButton = document.getElementById('java-ip-button');
         const eaglerIpButton = document.getElementById('eagler-ip-button');
-        const serverStatusPrompt = document.getElementById('server-status-prompt');
+        const onlineStatusDisplay = document.getElementById('online-status-display');
         const statusTimerPrompt = document.getElementById('status-timer-prompt');
-
 
         // Function to copy text to clipboard
         function copyToClipboard(text) {
@@ -125,36 +128,37 @@
 
         // Function to check server status
         function checkServerStatus() {
-            const serverAddress = 'connect.zapto.org:25565';
-            const apiUrl = `https://api.mcsrvstat.us/2/${serverAddress}`;
+            const serverAddress = 'connect.zapto.org';
+            const serverPort = 25565;
 
-            fetch(apiUrl)
+            // Use a fetch request to a status endpoint (if available)
+            fetch(`https://api.mcstatus.io/v2/status/java/${serverAddress}:${serverPort}`)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data.online) {
-                        serverStatusPrompt.textContent = 'Server is online';
-                        serverStatusPrompt.style.color = 'green';
+                    if (data.online) {
+                        onlineStatusDisplay.textContent = "ONLINE";
+                        onlineStatusDisplay.style.color = "green"; // Set color to green
                     } else {
-                        serverStatusPrompt.textContent = 'Server is offline';
-                        serverStatusPrompt.style.color = 'red';
+                        onlineStatusDisplay.textContent = "OFFLINE";
+                        onlineStatusDisplay.style.color = "red"; // Set color to red
                     }
                 })
                 .catch(error => {
-                    serverStatusPrompt.textContent = 'Server is offline or cannot be reached';
-                    serverStatusPrompt.style.color = 'red';
-                    console.error('Error checking server status:', error);
+                    onlineStatusDisplay.textContent = "Error checking status";
+                    onlineStatusDisplay.style.color = "red"; // Set color to red on error
+                    console.error("Error fetching server status:", error);
                 });
         }
 
-        // Check server status when the page loads, and then every 10 seconds
+        // Check server status every 5 seconds
         checkServerStatus();
-        let countdown = 10;
+        let countdown = 5;
         statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
         const intervalId = setInterval(() => {
             countdown--;
             statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
             if (countdown <= 0) {
-                countdown = 10;
+                countdown = 5;
                 checkServerStatus();
                 statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
             }
