@@ -37,6 +37,45 @@
             text-align: center;
             font-size: 1rem;
         }
+        #motd-display {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .mc-color-0 { color: #000000; } /* Black */
+        .mc-color-1 { color: #0000AA; } /* Dark Blue */
+        .mc-color-2 { color: #00AA00; } /* Dark Green */
+        .mc-color-3 { color: #00AAAA; } /* Dark Aqua */
+        .mc-color-4 { color: #AA0000; } /* Dark Red */
+        .mc-color-5 { color: #AA00AA; } /* Dark Purple */
+        .mc-color-6 { color: #FFAA00; } /* Gold */
+        .mc-color-7 { color: #AAAAAA; } /* Gray */
+        .mc-color-8 { color: #555555; } /* Dark Gray */
+        .mc-color-9 { color: #5555FF; } /* Blue */
+        .mc-color-a { color: #55FF55; } /* Green */
+        .mc-color-b { color: #55FFFF; } /* Aqua */
+        .mc-color-c { color: #FF5555; } /* Red */
+        .mc-color-d { color: #FF55FF; } /* Light Purple */
+        .mc-color-e { color: #FFFF55; } /* Yellow */
+        .mc-color-f { color: #FFFFFF; } /* White */
+        .mc-format-bold { font-weight: bold; }
+        .mc-format-italic { font-style: italic; }
+        .mc-format-underline { text-decoration: underline; }
+        .mc-format-strikethrough { text-decoration: line-through; }
+        .mc-format-obfuscated {
+            /* Doesn't have a direct CSS equivalent, so we'll just make it random */
+            animation: obfuscate 0.5s infinite;
+            display: inline-block; /* Prevent spaces from collapsing */
+        }
+        @keyframes obfuscate {
+            from {
+                content: attr(data-content);
+            }
+            to {
+                content: var(--obfuscated-text);
+            }
+        }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -84,6 +123,7 @@
         </div>
         <div id="online-status-display"></div>
         <div id="player-count-display"></div>
+        <div id="motd-display"></div>
         <div class="text-center text-gray-500 text-sm mt-1">
             Server status is outdated by around 35 seconds
         </div>
@@ -109,6 +149,7 @@
         const eaglerIpButton = document.getElementById('eagler-ip-button');
         const onlineStatusDisplay = document.getElementById('online-status-display');
         const playerCountDisplay = document.getElementById('player-count-display');
+        const motdDisplay = document.getElementById('motd-display');
         const statusTimerPrompt = document.getElementById('status-timer-prompt');
 
         // Function to copy text to clipboard
@@ -140,7 +181,12 @@
 
             // Use a fetch request to a status endpoint (if available)
             fetch(`https://api.mcstatus.io/v2/status/java/${serverAddress}:${serverPort}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.online) {
                         onlineStatusDisplay.textContent = "ONLINE";
@@ -152,18 +198,104 @@
                         } else {
                             playerCountDisplay.textContent = "Players: N/A";
                         }
+                        const motd = data.motd?.raw;
+                        if (Array.isArray(motd) && motd.length > 0) { // Check if motd is an array
+                            let motdText = processMinecraftColors(motd.join(" "));
+                            motdDisplay.innerHTML = "Motd: " + motdText;
+                        } else if (typeof motd === 'string') {
+                            let motdText = processMinecraftColors(motd);
+                            motdDisplay.innerHTML = "Motd: " + motdText;
+                        }
+
+                        else {
+                            motdDisplay.textContent = "Motd: N/A";
+                        }
+
                     } else {
                         onlineStatusDisplay.textContent = "OFFLINE";
                         onlineStatusDisplay.style.color = "red"; // Set color to red
                         playerCountDisplay.textContent = "Players: N/A";
+                        motdDisplay.textContent = "Motd: N/A";
                     }
                 })
                 .catch(error => {
-                    onlineStatusDisplay.textContent = "Error checking status";
+                    onlineStatusDisplay.textContent = "Error checking status: " + error.message;
                     onlineStatusDisplay.style.color = "red"; // Set color to red on error
                     playerCountDisplay.textContent = "Players: N/A";
                     console.error("Error fetching server status:", error);
                 });
+        }
+
+        function processMinecraftColors(text) {
+            const colorCodes = {
+                '\u00A70': '<span style="color:#000000;">', '\u00A71': '<span style="color:#0000AA;">',
+                '\u00A72': '<span style="color:#00AA00;">', '\u00A73': '<span style="color:#00AAAA;">',
+                '\u00A74': '<span style="color:#AA0000;">', '\u00A75': '<span style="color:#AA00AA;">',
+                '\u00A76': '<span style="color:#FFAA00;">', '\u00A77': '<span style="color:#AAAAAA;">',
+                '\u00A78': '<span style="color:#555555;">', '\u00A79': '<span style="color:#5555FF;">',
+                '\u00A7a': '<span style="color:#55FF55;">', '\u00A7b': '<span style="color:#55FFFF;">',
+                '\u00A7c': '<span style="color:#FF5555;">', '\u00A7d': '<span style="color:#FF55FF;">',
+                '\u00A7e': '<span style="color:#FFFF55;">', '\u00A7f': '<span style="color:#FFFFFF;">',
+                '\u00A7l': '<span style="font-weight:bold;">', '\u00A7m': '<span style="text-decoration:line-through;">',
+                '\u00A7n': '<span style="text-decoration:underline;">', '\u00A7o': '<span style="font-style:italic;">',
+                '\u00A7k': '<span style="animation:obfuscate 0.5s infinite; display:inline-block;" data-content="' + text + '">',
+                '\u00A7r': '</span>' // Reset
+            };
+
+            let resultHTML = '';
+            let currentSpan = '';
+            let resetStyle = false;
+
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (char === '\u00A7' && colorCodes[text[i + 1]]) {
+                    if (currentSpan) {
+                        resultHTML += currentSpan + '</span>';
+                        currentSpan = '';
+                    }
+                    const code = text[i] + text[i + 1];
+                    const span = colorCodes[code];
+                    currentSpan = span;
+                    i++; // Skip the color code
+                    resetStyle = false; // Don't reset immediately after a new code
+                } else if (char === '\u00A7' && text[i + 1] === 'r') {
+                    if (currentSpan) {
+                        resultHTML += currentSpan + '</span>';
+                        currentSpan = '';
+                    }
+                    resultHTML += '<span style="">';
+                    i++;
+                    resetStyle = true;
+                }
+
+                 else {
+                    currentSpan += char;
+                }
+            }
+            resultHTML += currentSpan;
+            // Replace obfuscated spans content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = resultHTML;
+            const obfuscatedSpans = tempDiv.querySelectorAll('[style*="animation: obfuscate"]');
+            obfuscatedSpans.forEach(span => {
+                span.style.setProperty('--obfuscated-text', generateObfuscatedText(span.textContent));
+            });
+            return tempDiv.innerHTML;
+        }
+
+        function generateObfuscatedText(text) {
+            const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-+={}[]|;:<>,.?/~";
+            let result = "";
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (characters.includes(char)) {
+                    result += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                else {
+                    result += char;
+                }
+            }
+            return result;
         }
 
         // Check server status every 5 seconds
