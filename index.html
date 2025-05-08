@@ -3,102 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zapto Network</title>
+    <title>ZaptoNetwork</title>
     <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1326424971714625546/1368743471812186142/Screenshot_2025-03-15_204438.png?ex=68195531&is=681803b1&hm=73a135b4c305eafa31dcf141007ed5f40f09cc8bc4927a4dbbd5d5b1900ad29d&=&format=webp&quality=lossless&width=386&height=385">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
         }
         .copy-button {
             cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
         }
         .copy-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
-        .copy-button:active {
-            transform: translateY(0);
-        }
-        .copy-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 5px;
-            height: 5px;
-            background: rgba(255, 255, 255, 0.5);
-            opacity: 0;
-            border-radius: 100%;
-            transform: scale(1, 1) translate(-50%);
-            transform-origin: 50% 50%;
-        }
-        .copy-button:focus:not(:active)::after {
-            animation: ripple 1s ease-out;
-        }
-        @keyframes ripple {
-            0% {
-                transform: scale(0, 0);
-                opacity: 0.5;
-            }
-            100% {
-                transform: scale(20, 20);
-                opacity: 0;
-            }
+            opacity: 0.9;
         }
         header {
-            background-size: cover;
+            background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+            padding-top: 20vh;
+            padding-bottom: 20vh;
+            min-height: 50vh;
         }
         #online-status-display {
             margin-top: 2rem;
             text-align: center;
-            font-size: 1.75rem;
+            font-size: 1.5rem;
             font-weight: bold;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
         #player-count-display {
             margin-top: 1rem;
             text-align: center;
-            font-size: 1.25rem;
-            color: #d1d5db;
+            font-size: 1rem;
         }
         #motd-display {
             margin-top: 1rem;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: bold;
-            padding: 0.5rem 1rem;
-            background: rgba(255,255,255,0.1);
-            border-radius: 0.5rem;
-            display: inline-block;
-            max-width: 90%;
-            margin-left: auto;
-            margin-right: auto;
         }
         .mc-color-0 { color: #000000; } /* Black */
         .mc-color-1 { color: #0000AA; } /* Dark Blue */
@@ -133,199 +77,71 @@
                 content: var(--obfuscated-text);
             }
         }
-        .status-pulse {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            margin-right: 8px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
-            }
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
-            }
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
-            }
-        }
-        .status-pulse.offline {
-            background: #ff4444;
-            animation: pulse-offline 2s infinite;
-        }
-        @keyframes pulse-offline {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
-            }
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
-            }
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
-            }
-        }
-        .purchase-btn {
-            transition: all 0.3s ease;
-            transform-style: preserve-3d;
-            position: relative;
-            overflow: hidden;
-        }
-        .purchase-btn:hover {
-            transform: translateY(-5px) rotateX(10deg);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-        .purchase-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        .purchase-btn:hover::before {
-            left: 100%;
-        }
-        .server-info-card {
-            background: rgba(30, 30, 30, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 2rem auto;
-            max-width: 800px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
-        }
-        .server-info-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-        }
-        .countdown {
-            font-size: 0.9rem;
-            color: #9ca3af;
-            text-align: center;
-            margin-top: 1rem;
-        }
-        .countdown-number {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            padding: 0.2rem 0.5rem;
-            border-radius: 0.25rem;
-            min-width: 2rem;
-            text-align: center;
-        }
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
     </style>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 </head>
-<body class="text-white">
+<body class="bg-black text-white">
 
-    <header class="relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-80"></div>
-        <div class="container mx-auto text-center relative z-10 px-4">
-            <img src="https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png" 
-                 alt="Zapto Network Logo" 
-                 class="mx-auto mb-8 w-64 md:w-80 floating animate__animated animate__fadeIn">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate__animated animate__fadeInUp">ZAPTO NETWORK</h1>
-            <p class="text-xl md:text-2xl text-gray-300 mb-8 animate__animated animate__fadeInUp animate__delay-1s">Java and Eagler 1.7.2-1.21.5</p>
+
+    <header class="bg-cover bg-center bg-no-repeat py-32" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png');">
+        <div class="container mx-auto text-center">
         </div>
     </header>
 
-    <main class="container mx-auto py-10 px-4">
-        <div class="server-info-card animate__animated animate__fadeIn animate__delay-1s">
-            <div id="online-status-display" class="flex items-center justify-center">
-                <div class="status-pulse"></div>
-                <span>Checking server status...</span>
-            </div>
-            <div id="player-count-display"></div>
-            <div id="motd-display"></div>
-            <div class="countdown">
-                <span>Checking again in</span>
-                <span id="countdown-number" class="countdown-number">5</span>
-                <span>seconds...</span>
-            </div>
-            <div class="text-center text-gray-500 text-sm mt-4">
-                Server status is updated every 5 seconds | PROVIDED BY: https://www.minecraftpinger.com/
-            </div>
+    <main class="container mx-auto py-10">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <a href="https://example.com" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-center">
+                Purchase VIP
+            </a>
+
+            <a href="https://example.com" class="bg-green-500 hover:bg-green-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 text-center">
+                Purchase MVP
+            </a>
+
+            <a href="https://example.com" class="bg-indigo-500 hover:bg-indigo-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 text-center">
+                Purchase MVP+
+            </a>
+
+            <a href="https://example.com" class="bg-yellow-500 hover:bg-yellow-700 text-gray-900 font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 text-center">
+                Purchase GOD
+            </a>
+
+            <a href="https://example.com" class="bg-purple-500 hover:bg-purple-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 text-center">
+                Purchase MVP++
+            </a>
+
+            <a href="https://example.com" class="bg-pink-500 hover:bg-pink-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 text-center">
+                Purchase MVP+++
+            </a>
+
+            <button id="java-ip-button" class="copy-button bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center">
+                Java ip: connect.zapto.org
+            </button>
+
+            <button id="eagler-ip-button" class="copy-button bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg py-4 px-6 transition duration-300 ease-in-out shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center">
+                Eagler ip: ws://connect.zapto.org:8081/
+            </button>
         </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-1s">
-                <div class="text-xl">Purchase VIP</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $5.99</div>
-            </a>
-
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-green-500 to-green-700 hover:from-green-600 hover:to-green-800 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-1s">
-                <div class="text-xl">Purchase MVP</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $9.99</div>
-            </a>
-
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-indigo-500 to-indigo-700 hover:from-indigo-600 hover:to-indigo-800 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-1s">
-                <div class="text-xl">Purchase MVP+</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $14.99</div>
-            </a>
-
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-yellow-400 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-gray-900 font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-2s">
-                <div class="text-xl">Purchase GOD</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $19.99</div>
-            </a>
-
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-2s">
-                <div class="text-xl">Purchase MVP++</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $24.99</div>
-            </a>
-
-            <a href="https://example.com" class="purchase-btn bg-gradient-to-br from-pink-500 to-pink-700 hover:from-pink-600 hover:to-pink-800 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-pink-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-2s">
-                <div class="text-xl">Purchase MVP+++</div>
-                <div class="text-sm opacity-80 mt-1">Starting at $29.99</div>
-            </a>
-
-            <button id="java-ip-button" class="copy-button bg-gradient-to-br from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-3s">
-                <div class="text-xl">Java IP</div>
-                <div class="text-sm opacity-80 mt-1">connect.zapto.org</div>
-            </button>
-
-            <button id="eagler-ip-button" class="copy-button bg-gradient-to-br from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 text-white font-semibold rounded-xl py-5 px-6 transition duration-300 ease-in-out shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 text-center animate__animated animate__fadeInUp animate__delay-3s">
-                <div class="text-xl">Eagler IP</div>
-                <div class="text-sm opacity-80 mt-1">ws://connect.zapto.org:8081/</div>
-            </button>
+        <div id="online-status-display"></div>
+        <div id="player-count-display"></div>
+        <div id="motd-display"></div>
+        <div class="text-center text-gray-500 text-sm mt-1">
+            Server status is outdated by around 35 seconds due to api | PROVIDED BY: https://www.minecraftpinger.com/
+        </div>
+        <div id="status-timer-prompt" class="mt-2 text-center text-gray-600">
+            Checking again in 5 seconds...
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white py-8 mt-16">
-        <div class="container mx-auto text-center">
-            <div class="flex justify-center space-x-6 mb-4">
-                <a href="https://discord.gg/HJWwBhxFGn" class="text-gray-400 hover:text-white transition-colors duration-200">
-                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"></path>
-                    </svg>
-                </a>
-            </div>
-            <p class="text-gray-400 text-sm">&copy; 2024 ZAPTO NETWORK. All rights reserved.</p>
-            <p class="text-gray-500 text-xs mt-2">
-                <a href="https://discord.gg/HJWwBhxFGn" class="hover:text-gray-300 transition-colors duration-200">Privacy Policy</a>
-                <span class="mx-2">•</span>
-                <a href="https://discord.gg/HJWwBhxFGn" class="hover:text-gray-300 transition-colors duration-200">Terms of Service</a>
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto text-center text-sm">
+            <p>&copy; 2024 ZAPTO NETWORK. All rights reserved.</p>
+            <p>
+                <a href="https://discord.gg/HJWwBhxFGn" class="text-gray-300 hover:text-white transition-colors duration-200 underline">Privacy Policy</a>
+                <span> | </span>
+                <a href="https://discord.gg/HJWwBhxFGn" class="text-gray-300 hover:text-white transition-colors duration-200 underline">Terms of Service</a>
             </p>
         </div>
     </footer>
@@ -337,32 +153,18 @@
         const onlineStatusDisplay = document.getElementById('online-status-display');
         const playerCountDisplay = document.getElementById('player-count-display');
         const motdDisplay = document.getElementById('motd-display');
-        const countdownNumber = document.getElementById('countdown-number');
-        const statusPulse = document.querySelector('.status-pulse');
+        const statusTimerPrompt = document.getElementById('status-timer-prompt');
 
-        // Function to copy text to clipboard with visual feedback
+        // Function to copy text to clipboard
         function copyToClipboard(text) {
             const tempInput = document.createElement('input');
             tempInput.value = text;
             document.body.appendChild(tempInput);
             tempInput.select();
-            tempInput.setSelectionRange(0, 99999);
+            tempInput.setSelectionRange(0, 99999); // For mobile
             document.execCommand('copy');
             document.body.removeChild(tempInput);
-            
-            // Create and show toast notification
-            const toast = document.createElement('div');
-            toast.textContent = 'Copied to clipboard: ' + text;
-            toast.className = 'fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate__animated animate__fadeInUp';
-            document.body.appendChild(toast);
-            
-            // Remove toast after animation
-            setTimeout(() => {
-                toast.classList.add('animate__fadeOutDown');
-                setTimeout(() => {
-                    document.body.removeChild(toast);
-                }, 500);
-            }, 2000);
+            alert('Copied to clipboard: ' + text); //optional
         }
 
         // Event listener for Java IP button
@@ -380,6 +182,7 @@
             const serverAddress = 'connect.zapto.org';
             const serverPort = 25565;
 
+            // Use a fetch request to a status endpoint (if available)
             fetch(`https://api.mcstatus.io/v2/status/java/${serverAddress}:${serverPort}`)
                 .then(response => {
                     if (!response.ok) {
@@ -389,126 +192,106 @@
                 })
                 .then(data => {
                     if (data.online) {
-                        // Update status display
-                        statusPulse.className = 'status-pulse';
-                        onlineStatusDisplay.innerHTML = `<div class="status-pulse"></div><span class="text-green-500">SERVER ONLINE</span>`;
-                        
-                        // Update player count
+                        onlineStatusDisplay.textContent = "ONLINE";
+                        onlineStatusDisplay.style.color = "green"; // Set color to green
+
                         const players = data.players;
                         if (players) {
-                            playerCountDisplay.innerHTML = `
-                                <div class="flex items-center justify-center space-x-2">
-                                    <span class="text-green-400 font-bold">${players.online}</span>
-                                    <span class="text-gray-400">/</span>
-                                    <span class="text-gray-400">${players.max}</span>
-                                    <span class="text-gray-400">players online</span>
-                                </div>
-                            `;
+                            playerCountDisplay.textContent = `${players.online}/${players.max}`;
                         } else {
                             playerCountDisplay.textContent = "Players: N/A";
                         }
-                        
-                        // Update MOTD
                         const motd = data.motd?.raw;
-                        if (Array.isArray(motd) {
+                        if (Array.isArray(motd) && motd.length > 0) { // Check if motd is an array
                             let motdText = processMinecraftColors(motd.join(" "));
-                            motdDisplay.innerHTML = motdText;
+                            motdDisplay.innerHTML = "Motd: " + motdText;
                         } else if (typeof motd === 'string') {
                             let motdText = processMinecraftColors(motd);
-                            motdDisplay.innerHTML = motdText;
-                        } else {
-                            motdDisplay.textContent = "No MOTD available";
+                            motdDisplay.innerHTML = "Motd: " + motdText;
+                        }
+
+                        else {
+                            motdDisplay.textContent = "Motd: N/A";
                         }
 
                     } else {
-                        // Server offline
-                        statusPulse.className = 'status-pulse offline';
-                        onlineStatusDisplay.innerHTML = `<div class="status-pulse offline"></div><span class="text-red-500">SERVER OFFLINE</span>`;
-                        playerCountDisplay.textContent = "";
-                        motdDisplay.textContent = "Server is currently offline";
+                        onlineStatusDisplay.textContent = "OFFLINE";
+                        onlineStatusDisplay.style.color = "red"; // Set color to red
+                        playerCountDisplay.textContent = "Players: N/A";
+                        motdDisplay.textContent = "Motd: N/A";
                     }
                 })
                 .catch(error => {
-                    statusPulse.className = 'status-pulse offline';
-                    onlineStatusDisplay.innerHTML = `<div class="status-pulse offline"></div><span class="text-red-500">ERROR CHECKING STATUS</span>`;
-                    playerCountDisplay.textContent = "";
-                    motdDisplay.textContent = "Failed to fetch server status";
+                    onlineStatusDisplay.textContent = "Error checking status: " + error.message;
+                    onlineStatusDisplay.style.color = "red"; // Set color to red on error
+                    playerCountDisplay.textContent = "Players: N/A";
                     console.error("Error fetching server status:", error);
                 });
         }
+function processMinecraftColors(text) {
+    const colorCodes = {
+        '\u00A70': '<span style="color:#000000;">', '\u00A71': '<span style="color:#0000AA;">',
+        '\u00A72': '<span style="color:#00AA00;">', '\u00A73': '<span style="color:#00AAAA;">',
+        '\u00A74': '<span style="color:#AA0000;">', '\u00A75': '<span style="color:#AA00AA;">',
+        '\u00A76': '<span style="color:#FFAA00;">', '\u00A77': '<span style="color:#AAAAAA;">',
+        '\u00A78': '<span style="color:#555555;">', '\u00A79': '<span style="color:#5555FF;">',
+        '\u00A7a': '<span style="color:#55FF55;">', '\u00A7b': '<span style="color:#55FFFF;">',
+        '\u00A7c': '<span style="color:#FF5555;">', '\u00A7d': '<span style="color:#FF55FF;">',
+        '\u00A7e': '<span style="color:#FFFF55;">', '\u00A7f': '<span style="color:#FFFFFF;">',
+        '\u00A7l': '<span style="font-weight:bold;">', '\u00A7m': '<span style="text-decoration:line-through;">',
+        '\u00A7n': '<span style="text-decoration:underline;">', '\u00A7o': '<span style="font-style:italic;">',
+        '\u00A7k': '<span class="mc-format-obfuscated" data-content="">', // handled below
+        '\u00A7r': '</span>' // Reset
+    };
 
-        function processMinecraftColors(text) {
-            const colorCodes = {
-                '\u00A70': '<span class="mc-color-0">', '\u00A71': '<span class="mc-color-1">',
-                '\u00A72': '<span class="mc-color-2">', '\u00A73': '<span class="mc-color-3">',
-                '\u00A74': '<span class="mc-color-4">', '\u00A75': '<span class="mc-color-5">',
-                '\u00A76': '<span class="mc-color-6">', '\u00A77': '<span class="mc-color-7">',
-                '\u00A78': '<span class="mc-color-8">', '\u00A79': '<span class="mc-color-9">',
-                '\u00A7a': '<span class="mc-color-a">', '\u00A7b': '<span class="mc-color-b">',
-                '\u00A7c': '<span class="mc-color-c">', '\u00A7d': '<span class="mc-color-d">',
-                '\u00A7e': '<span class="mc-color-e">', '\u00A7f': '<span class="mc-color-f">',
-                '\u00A7l': '<span class="mc-format-bold">', '\u00A7m': '<span class="mc-format-strikethrough">',
-                '\u00A7n': '<span class="mc-format-underline">', '\u00A7o': '<span class="mc-format-italic">',
-                '\u00A7k': '<span class="mc-format-obfuscated">', // Obfuscated
-                '\u00A7r': '</span>' // Reset
-            };
+    let resultHTML = '';
+    let openTags = [];
 
-            let resultHTML = '';
-            let openTags = [];
-
-            for (let i = 0; i < text.length; i++) {
-                if (text[i] === '\u00A7' && i + 1 < text.length) {
-                    const code = text.substr(i, 2);
-                    if (code === '\u00A7r') {
-                        // Close all open tags
-                        while (openTags.length > 0) {
-                            resultHTML += '</span>';
-                            openTags.pop();
-                        }
-                    } else if (colorCodes[code]) {
-                        resultHTML += colorCodes[code];
-                        openTags.push('</span>');
-                    }
-                    i++; // Skip color code
-                } else {
-                    resultHTML += text[i];
+    for (let i = 0; i < text.length; i++) {
+        if (text[i] === '\u00A7' && i + 1 < text.length) {
+            const code = text.substr(i, 2);
+            if (code === '\u00A7r') {
+                while (openTags.length > 0) {
+                    resultHTML += '</span>';
+                    openTags.pop();
                 }
+            } else if (colorCodes[code]) {
+                resultHTML += colorCodes[code];
+                openTags.push('</span>');
             }
-
-            // Close any unclosed tags
-            while (openTags.length > 0) {
-                resultHTML += openTags.pop();
-            }
-
-            return resultHTML;
+            i++; // Skip color code
+        } else {
+            resultHTML += text[i];
         }
+    }
+
+    // Close any unclosed tags
+    while (openTags.length > 0) {
+        resultHTML += openTags.pop();
+    }
+
+    return resultHTML;
+}
+
+function generateObfuscatedText(text) {
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return Array.from(text).map(char => chars[Math.floor(Math.random() * chars.length)]).join('');
+}
+
 
         // Check server status every 5 seconds
         checkServerStatus();
         let countdown = 5;
-        
-        const updateCountdown = () => {
-            countdownNumber.textContent = countdown;
+        statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
+        const intervalId = setInterval(() => {
             countdown--;
-            
-            if (countdown < 0) {
+            statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
+            if (countdown <= 0) {
                 countdown = 5;
                 checkServerStatus();
+                statusTimerPrompt.textContent = `Checking again in ${countdown} seconds...`;
             }
-        };
-        
-        updateCountdown();
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        
-        // Add hover effects to buttons
-        document.querySelectorAll('.copy-button, .purchase-btn').forEach(button => {
-            button.addEventListener('mouseenter', () => {
-                button.classList.add('animate__pulse');
-            });
-            button.addEventListener('mouseleave', () => {
-                button.classList.remove('animate__pulse');
-            });
-        });
+        }, 1000);
     </script>
 </body>
 </html>
