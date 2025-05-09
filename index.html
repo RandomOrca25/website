@@ -195,6 +195,30 @@
     <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
 </audio>
 
+<!-- Announcements Section -->
+<section class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="bg-gradient-to-r from-purple-900/70 to-blue-900/70 rounded-xl border border-purple-500/30 p-6 shadow-lg">
+        <div class="flex items-center mb-4">
+            <div class="bg-yellow-400 text-purple-900 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Live Announcements</h2>
+            <span id="new-announcement-badge" class="hidden ml-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">NEW!</span>
+        </div>
+        
+        <div id="announcement-container" class="bg-gray-900/50 rounded-lg p-4 min-h-[100px] flex items-center justify-center">
+            <p id="current-announcement" class="text-gray-300 text-center">Loading announcements...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Audio element for notification sound -->
+<audio id="ping-sound" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
+</audio>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const announcementUrl = 'https://raw.githubusercontent.com/RandomOrca25/website/main/announce.txt';
@@ -202,86 +226,108 @@ document.addEventListener('DOMContentLoaded', function() {
     const newAnnouncementBadge = document.getElementById('new-announcement-badge');
     const pingSound = document.getElementById('ping-sound');
     
-    console.log("Announcement system starting..."); // Debug
-    
-    let lastAnnouncement = '';
+    let lastContentHash = '';
     let announcements = [];
     let currentIndex = 0;
-    let checkInterval = 30000;
-    let rotationInterval = 10000;
     
-    async function fetchAnnouncements() {
+    // Ultra-fast checking with no caching
+    async function fetchWithNoCache() {
         try {
-            console.log("Fetching announcements..."); // Debug
-            const cacheBuster = `?t=${new Date().getTime()}&rand=${Math.random()}`;
-            const response = await fetch(announcementUrl + cacheBuster);
-            
-            console.log("Response status:", response.status); // Debug
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            
-            const text = await response.text();
-            console.log("Raw response:", text); // Debug
-            
-            const newAnnouncements = text.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
-                
-            console.log("Processed announcements:", newAnnouncements); // Debug
-            
-            if (JSON.stringify(newAnnouncements) !== JSON.stringify(announcements)) {
-                announcements = newAnnouncements;
-                console.log("New announcements detected"); // Debug
-                
-                if (lastAnnouncement !== '' && announcements.length > 0) {
-                    pingSound.play().catch(e => console.log("Audio error:", e));
-                    newAnnouncementBadge.classList.remove('hidden');
-                    setTimeout(() => newAnnouncementBadge.classList.add('hidden'), 5000);
+            const response = await fetch(`${announcementUrl}?nocache=${Date.now()}`, {
+                cache: 'no-store',
+                headers: {
+                    'Cache-Control': 'no-cache, no-store, must-revalidate',
+                    'Pragma': 'no-cache',
+                    'Expires': '0'
                 }
-                
-                if (announcements.length > 0) {
-                    currentIndex = 0;
-                    displayAnnouncement();
-                    startRotation();
-                } else {
-                    announcementContainer.textContent = 'No announcements found';
-                }
-            }
+            });
             
-            lastAnnouncement = announcements.length > 0 ? announcements[0] : '';
+            if (!response.ok) throw new Error(`HTTP error! ${response.status}`);
+            return await response.text();
         } catch (error) {
             console.error('Fetch error:', error);
-            announcementContainer.textContent = 'Error loading announcements';
-            announcementContainer.style.color = 'red';
+            return null;
         }
     }
     
-    function displayAnnouncement() {
+    // Process announcements
+    function processAnnouncements(text) {
+        return text.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+    }
+    
+    // Display current announcement
+    function showAnnouncement() {
         if (announcements.length === 0) {
-            announcementContainer.textContent = 'No announcements available';
+            announcementContainer.textContent = 'No announcements currently';
             return;
         }
         
-        announcementContainer.classList.add('opacity-0');
+        announcementContainer.style.opacity = 0;
         setTimeout(() => {
             announcementContainer.textContent = announcements[currentIndex];
-            announcementContainer.classList.remove('opacity-0');
-        }, 500);
-        
-        currentIndex = (currentIndex + 1) % announcements.length;
+            announcementContainer.style.opacity = 1;
+            currentIndex = (currentIndex + 1) % announcements.length;
+        }, 300);
     }
     
-    function startRotation() {
-        if (announcements.length > 1) {
-            clearInterval(window.announcementRotation);
-            window.announcementRotation = setInterval(displayAnnouncement, rotationInterval);
+    // Check for updates every 2 seconds (extremely fast)
+    async function checkForUpdates() {
+        const content = await fetchWithNoCache();
+        if (!content) return;
+        
+        const contentHash = hashCode(content);
+        if (contentHash !== lastContentHash) {
+            lastContentHash = contentHash;
+            const newAnnouncements = processAnnouncements(content);
+            
+            if (JSON.stringify(newAnnouncements) !== JSON.stringify(announcements)) {
+                announcements = newAnnouncements;
+                
+                // Only notify if we had previous content
+                if (announcements.length > 0) {
+                    pingSound.play().catch(e => console.log('Audio error:', e));
+                    newAnnouncementBadge.classList.remove('hidden');
+                    setTimeout(() => newAnnouncementBadge.classList.add('hidden'), 2000);
+                    
+                    currentIndex = 0;
+                    showAnnouncement();
+                    
+                    // Auto-rotate if multiple announcements
+                    if (announcements.length > 1) {
+                        clearInterval(window.announcementRotation);
+                        window.announcementRotation = setInterval(showAnnouncement, 8000);
+                    }
+                }
+            }
         }
     }
     
-    // Initial load
-    fetchAnnouncements();
+    // Simple hash function for content comparison
+    function hashCode(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            hash = (hash << 5) - hash + str.charCodeAt(i);
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    }
     
-    // Setup periodic checking
-    window.announcementChecker = setInterval(fetchAnnouncements, checkInterval);
+    // Initial load
+    checkForUpdates();
+    
+    // Check every 2 seconds for updates (extremely fast)
+    window.announcementUpdater = setInterval(checkForUpdates, 2000);
+    
+    // Add smooth transition
+    const style = document.createElement('style');
+    style.textContent = `
+        #current-announcement {
+            transition: opacity 0.3s ease-in-out;
+        }
+    `;
+    document.head.appendChild(style);
 });
 </script>
         <!-- Server status card -->
