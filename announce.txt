@@ -1,4 +1,4 @@
 Announcement thingy was made by HomeDragonjava (with pure pain)
-If the server is not connecting, expect it to work tomorrow, maybe it's the router tweaking!!!
+Server is back up, it was down last night due to homedragonjava messing up the authme config [login plugin]
 Guys, stop putting lead on your Chromebook USB port !1!1 You will cause a fire! AND EXPLODE YOU 
-Server was down last night due to HomeDragonJava updating authme [login plugin] configuration, Turbo_orca is working on a fix
+Don't listen to HomeDragonJava, you should put lead in chromebook usb port as it will delete securly [trust me bro]
