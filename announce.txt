@@ -1,5 +1,4 @@
 SERVER DOWN TIME REPORTED AT 3:55 PM / FRIDAY / MAY 16
-We Released a new way to transfer between servers! Use /servergui to open up a menu and choose your server! No more logging in multiple times to access the npcs
-Server was for a little on 5/15/25 due to ✨wifi outage✨
-If you want to support us, consider donating at our discord: https://discord.gg/HJWwBhxFGn or click the discord icon
+We've updated our server icon! This makes it more readable and clean on the restrictive 64x64 max image size of the minecraft server list!
+We expect ranks to be out by July
 
