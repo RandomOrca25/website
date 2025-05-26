@@ -1,5 +1,5 @@
 Teaser: ⚔️
-We've updated our server icon! This makes it more readable and clean on the restrictive 64x64 max image size of the minecraft server list!
 We expect ranks to be out by July
 If you want to support our other projects go to https://discord.gg/cvD7yvpYKb to support our browser
+We've updated our server icon! This makes it more readable and clean on the restrictive 64x64 max image size of the minecraft server list!
 
