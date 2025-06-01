@@ -1,5 +1,5 @@
 Teaser: ⚔️
-SERVER MAINTENANCE REPORTED AT 1:29 due to overheating issues, the server will return once temperatures return to normal.
+High Temps this weekend, server performance may be less than usual
 We expect ranks to be out by July
 If you want to support our other projects, go to https://discord.gg/cvD7yvpYKb to support our browser
 We've updated our server icon! This makes it more readable and clean on the restrictive 64x64 max image size of the minecraft server list!
