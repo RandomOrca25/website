@@ -317,7 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                             <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                         </svg>
-                        Eagler IP: ws://connect.zapto.org:8081/
+                        Eagler IP: ws://connect.zapto.org/
                     </button>
                 </div>
             </div>
@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Event listeners with modern feedback
             javaIpButton.addEventListener('click', () => copyToClipboard('connect.zapto.org'));
-            eaglerIpButton.addEventListener('click', () => copyToClipboard('ws://connect.zapto.org:8081/'));
+            eaglerIpButton.addEventListener('click', () => copyToClipboard('ws://connect.zapto.org/'));
             
             // Enhanced server status checker
             async function checkServerStatus() {
