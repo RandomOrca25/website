@@ -7,15 +7,12 @@
     <meta name="description" content="Join our Minecraft network with Java, Bedrock, and Eagler support. Play now!">
     <link rel="icon" type="image/png" href="https://media.discordapp.net/attachments/1326424971714625546/1368743471812186142/Screenshot_2025-03-15_204438.png">
     
-    <!-- Preload resources -->
     <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     
-    <!-- Tailwind with custom config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -163,16 +160,14 @@
 </head>
 <body class="bg-dark-900 text-gray-100 font-sans antialiased">
 
-    <!-- Banner section-->
-<header class="bg-center bg-no-repeat min-h-[70vh] sm:min-h-[80vh] w-full" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png'); background-size: 100% auto; background-color: #000;">
+    <header class="bg-center bg-no-repeat min-h-[70vh] sm:min-h-[80vh] w-full" style="background-image: url('https://raw.githubusercontent.com/RandomOrca25/website/main/Screenshot%202025-05-03%20213008.png'); background-size: 100% auto; background-color: #000;">
     <div class="container mx-auto text-center h-full flex items-center justify-center">
     </div>
 </header>
 
     <main class="container mx-auto px-4 py-12 max-w-6xl">
 
-        <!-- Announcements Section -->
-<section class="container mx-auto px-4 py-8 max-w-6xl">
+        <section class="container mx-auto px-4 py-8 max-w-6xl">
     <div class="bg-gradient-to-r from-purple-900/70 to-blue-900/70 rounded-xl border border-purple-500/30 p-6 shadow-lg">
         <div class="flex items-center mb-4">
             <div class="bg-yellow-400 text-purple-900 font-bold rounded-full w-8 h-8 flex items-center justify-center mr-3">
@@ -190,7 +185,6 @@
     </div>
 </section>
 
-<!-- Audio element for notification sound (hidden) -->
 <audio id="ping-sound" preload="auto">
     <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
 </audio>
@@ -284,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
     window.announcementChecker = setInterval(fetchAnnouncements, checkInterval);
 });
 </script>
-        <!-- Server status card -->
         <div class="server-card rounded-xl p-6 mb-12 border border-gray-700">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex-1">
@@ -317,7 +310,15 @@ document.addEventListener('DOMContentLoaded', function() {
                             <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                             <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
                         </svg>
-                        Eagler/Bedrock IP: eagler.zapto.org
+                        Eaglercraft IP: ws://eagler.zapto.org
+                    </button>
+
+                    <button id="bedrock-ip-button" class="copy-button bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg py-3 px-6 transition-all duration-300 text-center flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                        </svg>
+                        Bedrock IP: pocket.zapto.org
                     </button>
                 </div>
             </div>
@@ -328,11 +329,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
         
-        <!-- Store items grid -->
         <h2 class="text-3xl font-bold mb-8 text-center gradient-text bg-gradient-to-r from-primary-500 to-purple-500">Store Ranks</h2>
         
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- VIP -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-blue-500/20 bg-gradient-to-b from-blue-900/20 to-blue-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-blue-500/10">
                 <div class="absolute inset-0 bg-blue-500/5 group-hover:bg-blue-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -345,7 +344,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </a>
             
-            <!-- MVP -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-green-500/20 bg-gradient-to-b from-green-900/20 to-green-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-green-500/10">
                 <div class="absolute inset-0 bg-green-500/5 group-hover:bg-green-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -358,7 +356,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </a>
             
-            <!-- MVP+ -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-indigo-500/20 bg-gradient-to-b from-indigo-900/20 to-indigo-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-indigo-500/10">
                 <div class="absolute inset-0 bg-indigo-500/5 group-hover:bg-indigo-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -371,7 +368,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </a>
             
-            <!-- GOD -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-yellow-500/20 bg-gradient-to-b from-yellow-900/20 to-yellow-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/10">
                 <div class="absolute inset-0 bg-yellow-500/5 group-hover:bg-yellow-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -384,7 +380,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </a>
             
-            <!-- MVP++ -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-purple-500/20 bg-gradient-to-b from-purple-900/20 to-purple-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-purple-500/10">
                 <div class="absolute inset-0 bg-purple-500/5 group-hover:bg-purple-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -397,7 +392,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </a>
             
-            <!-- MVP+++ -->
             <a href="https://example.com" class="group relative overflow-hidden rounded-xl border border-pink-500/20 bg-gradient-to-b from-pink-900/20 to-pink-900/10 p-6 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-pink-500/10">
                 <div class="absolute inset-0 bg-pink-500/5 group-hover:bg-pink-500/10 transition-colors"></div>
                 <div class="relative z-10">
@@ -450,6 +444,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Elements
             const javaIpButton = document.getElementById('java-ip-button');
             const eaglerIpButton = document.getElementById('eagler-ip-button');
+            const bedrockIpButton = document.getElementById('bedrock-ip-button'); // New Bedrock IP button
             const onlineStatusDisplay = document.getElementById('online-status-display');
             const statusIndicator = document.getElementById('status-indicator');
             const playerCountDisplay = document.getElementById('player-count-display');
@@ -504,6 +499,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Event listeners with modern feedback
             javaIpButton.addEventListener('click', () => copyToClipboard('connect.zapto.org'));
             eaglerIpButton.addEventListener('click', () => copyToClipboard('ws://eagler.zapto.org/'));
+            bedrockIpButton.addEventListener('click', () => copyToClipboard('pocket.zapto.org')); // New event listener for Bedrock IP
             
             // Enhanced server status checker
             async function checkServerStatus() {
